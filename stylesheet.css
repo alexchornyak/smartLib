@@ -43,11 +43,6 @@ input#uquery {
     text-align: center;
 }
 
-.login_form .option a:hover {
-    background: #ededf5;
-    border-color: #c20a0a;
-}
-
 .login_form p {
     text-align: center;
     font-weight: 500;
@@ -117,3 +112,27 @@ form button {
 form button:hover {
     background: #c20a0a;
 }
+
+/*Support page contact form styling*/
+.contact_form {
+    width: 100%;
+    background: #fff;
+    padding: 41px 30px;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    padding: 10px;  
+    font-size: 16px;
+    resize: both; 
+}
+
+.contact_form h3 {
+    font-size: 20px;
+    text-align: center;
+}
+
+
+
+
