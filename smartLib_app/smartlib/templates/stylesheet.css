@@ -1,0 +1,157 @@
+/* Importing Google Fonts*/
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    flex-direction: column;
+}
+
+.header {
+    width: 100%;
+    height: 48.8px;
+    background-color: #423d3d;
+}
+
+.header nav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.header nav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+input#uquery {
+    width: 300px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+/* General form styling */
+.form_container {
+    width: 100%;
+    max-width: 435px;
+    background: #fff;
+    border-radius: 6px;
+    padding: 41px 30px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    display: inline-block;
+}
+
+.form_container h3 {
+    font-size: 20px;
+    text-align: center;
+}
+
+.form_container p {
+    text-align: center;
+    font-weight: 500;
+}
+
+form .input_box label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+/* Input field styling */
+form .input_box input,
+form .input_box textarea {
+    width: 100%;
+    border: 1px solid #DADAF2;
+    border-radius: 5px;
+    outline: none;
+    background: #F8F8FB;
+    font-size: 17px;
+    padding: 10px 20px;
+    margin-bottom: 25px;
+    transition: 0.2s ease;
+}
+
+form .input_box input {
+    height: 57px;
+}
+
+form .input_box input:focus,
+form .input_box textarea:focus {
+    border-color: #c20a0a;
+}
+
+form .input_box .password_title {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+
+form .input_box {
+    position: relative;
+}
+
+/* Links styling */
+a {
+    text-decoration: none;
+    color: #c20a0a;
+    font-weight: 500;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Button styling */
+form button {
+    width: 100%;
+    height: 56px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    background: #c20a0a;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-bottom: 28px;
+    transition: 0.3s ease;
+}
+
+form button:hover {
+    background: #a00a0a;
+}
+
+/* Login & Signup form styling */
+.login_form, .signup_form {
+    @extend .form_container;
+}
+
+/* Contact form specific styling */
+.contact_form {
+    width: 100%;
+    background: #fff;
+    padding: 41px 30px;
+}
+
+.contact_form textarea {
+    height: 150px;
+    resize: both;
+}
+
+.contact_form h3 {
+    font-size: 20px;
+    text-align: center;
+}
