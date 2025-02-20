@@ -42,22 +42,23 @@ input#uquery {
     font-size: 16px;
 }
 
-/* Login form styling */
-.login_form {
+/* General form styling */
+.form_container {
     width: 100%;
     max-width: 435px;
     background: #fff;
     border-radius: 6px;
     padding: 41px 30px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    display: inline-block;
 }
 
-.login_form h3 {
+.form_container h3 {
     font-size: 20px;
     text-align: center;
 }
 
-.login_form p {
+.form_container p {
     text-align: center;
     font-weight: 500;
 }
@@ -69,20 +70,25 @@ form .input_box label {
 }
 
 /* Input field styling */
-form .input_box input {
+form .input_box input,
+form .input_box textarea {
     width: 100%;
-    height: 57px;
     border: 1px solid #DADAF2;
     border-radius: 5px;
     outline: none;
     background: #F8F8FB;
     font-size: 17px;
-    padding: 0px 20px;
+    padding: 10px 20px;
     margin-bottom: 25px;
     transition: 0.2s ease;
 }
 
-form .input_box input:focus {
+form .input_box input {
+    height: 57px;
+}
+
+form .input_box input:focus,
+form .input_box textarea:focus {
     border-color: #c20a0a;
 }
 
@@ -96,6 +102,7 @@ form .input_box {
     position: relative;
 }
 
+/* Links styling */
 a {
     text-decoration: none;
     color: #c20a0a;
@@ -106,7 +113,7 @@ a:hover {
     text-decoration: underline;
 }
 
-/* Login button styling */
+/* Button styling */
 form button {
     width: 100%;
     height: 56px;
@@ -124,29 +131,27 @@ form button {
 }
 
 form button:hover {
-    background: #c20a0a;
+    background: #a00a0a;
 }
 
-/*Support page contact form styling*/
+/* Login & Signup form styling */
+.login_form, .signup_form {
+    @extend .form_container;
+}
+
+/* Contact form specific styling */
 .contact_form {
     width: 100%;
     background: #fff;
     padding: 41px 30px;
 }
 
-textarea {
-    width: 100%;
+.contact_form textarea {
     height: 150px;
-    padding: 10px;  
-    font-size: 16px;
-    resize: both; 
+    resize: both;
 }
 
 .contact_form h3 {
     font-size: 20px;
     text-align: center;
 }
-
-
-
-
