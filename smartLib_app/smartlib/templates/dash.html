@@ -23,11 +23,13 @@
         <!-- Main Content -->
         <main class="main-content">
             <header>
-                <h1>Borrowed Books</h1>
+                <h1>User Dashboard</h1>
             </header>
-            
+
+            <!-- Books Table for Borrowed Books -->
             <section class="books-table">
-                <table>
+                <h2>Currently Borrowed Books</h2>
+                <table id="borrowBooksTable">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -36,38 +38,37 @@
                             <th>Borrowed Date</th>
                             <th>Due Date</th>
                             <th>Status</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>The Great Gatsby</td>
-                            <td>F. Scott Fitzgerald</td>
-                            <td>Feb 10, 2025</td>
-                            <td>Mar 10, 2025</td>
-                            <td>📖 Borrowed</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>1984</td>
-                            <td>George Orwell</td>
-                            <td>Jan 5, 2025</td>
-                            <td>Feb 5, 2025</td>
-                            <td>⏳ Overdue</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>To Kill a Mockingbird</td>
-                            <td>Harper Lee</td>
-                            <td>Jan 20, 2025</td>
-                            <td>Feb 20, 2025</td>
-                            <td>✅ Returned</td>
-                        </tr>
+                        <!-- Books will be populated here dynamically -->
                     </tbody>
                 </table>
             </section>
+
+            <!-- Borrow Book Section -->
+            <section class="borrow-request-section">
+                <h2>Borrow a Book</h2>
+                <form id="borrowForm" class="borrow-form">
+                    <input type="text" id="bookTitle" placeholder="Enter book title to borrow">
+                    <button type="button" onclick="borrowBook()">Borrow</button>
+                </form>
+            </section>
+
+            <!-- Return Book Section -->
+            <section class="return-request-section">
+                <h2>Return a Book</h2>
+                <form id="returnForm" class="borrow-form">
+                    <input type="text" id="returnBookTitle" placeholder="Enter book title to return">
+                    <button type="button" onclick="returnBook()">Return</button>
+                </form>
+            </section>
         </main>
     </div>
+
+    <!--Needs to be implemented-->
+    <script src="script.js"></script>
 </body>
 
 </html>
