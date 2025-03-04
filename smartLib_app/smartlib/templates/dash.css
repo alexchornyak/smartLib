@@ -1,0 +1,36 @@
+
+/* Dashboard container */
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+}
+
+
+/* Main content */
+.main-content {
+    flex: 1;
+    padding: 20px;
+    background: white;
+}
+
+/* Table styling */
+.books-table table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+.books-table th, .books-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.books-table th {
+    background: #c20a0a;
+    color: white;
+}
+
+.books-table tbody tr:hover {
+    background: #f1f1f1;
+}

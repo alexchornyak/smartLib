@@ -10,14 +10,27 @@
 <body>
     <div class = "header">
         <nav>
-            <a href="contact.html">Support</a>
             <a href="login.html">Login</a>
             <a href="signup.html">Signup</a>
+            <a href="dash.html">Dashboard</a>
+            <a href="contact.html">Support</a>
         </nav>
     </div>
     
     <h2>Search</h2>
-    <input id="uquery" type="text" name="uquery" size="45">
+    <!-- Search Container -->
+    <div class="search-container">
+        <input id="uquery" type="text" name="uquery" size="45" placeholder="Search for books...">
+        
+        <select id="filterDropdown">
+            <option value="all">All</option>
+            <option value="title">Title</option>
+            <option value="author">Author</option>
+        </select>
+
+        <!--Needs JavaScript Implementation-->
+        <button onclick="searchBooks()">Search</button>
+    </div>
 </body>
 
 </html>
