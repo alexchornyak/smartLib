@@ -17,10 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from smartlib import views
+from smartlib.views import contact, success
 
 # Define paths to pages within the app
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', views.login_view, name='login')
+    path('login/', views.login_view, name='login'),
+    path('contact/', contact, name='contact'),
+    path('success/', success, name='success')
 ]

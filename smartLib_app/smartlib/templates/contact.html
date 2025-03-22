@@ -1,35 +1,36 @@
 <!DOCTYPE html>
-
+{% load static %}
 <html>
 
 <head>
     <title>Support</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="stylesheet.css">
+    <link rel="stylesheet" href="{% static 'css/stylesheet.css' %}">
 </head>
 
 <body>
-    
+
     <hr>
+
     <div class="contact_form">
-        
-        <form action="mailto:ahmedm28@mail.montclair.edu" method="post" enctype="text/plain">
-            <!--Name input box-->
-            <h3>Contact Us</h3>
+        <!--Name input box-->
+        <h3>Contact Us</h3>
+        <form method="POST">
+            {% csrf_token %}
             <div class="input_box">
                 <label>Name</label>
-                <input type="text" name="yourName" value=""placeholder="Enter name"><br>
-          
+                <input type="text" name="name" value=""placeholder="Enter name" required><br>
+            
                 <label>Email</label>
-                <input type="email" name="yourEmail" value="" placeholder="Enter email address"><br>
+                <input type="email" name="email" value="" placeholder="Enter email address" required><br>
             
                 <label>Subject</label>
-                <input type="text" name="yourSubject" value="" placeholder="Enter subject topic"><br>
-           
+                <input type="text" name="subject" value="" placeholder="Enter subject topic" required><br>
+            
                 <label>Your Message:</label><br>
-
-                <textarea name="body" rows="10" cols="30"></textarea><br>
-                <input type="submit" name="">
+                <textarea name="message" rows="10" cols="30" placeholder="Type your message here..." required></textarea><br>
+                
+                <input type="submit" name="Send message">
             </div>
         </form>
     </div>
