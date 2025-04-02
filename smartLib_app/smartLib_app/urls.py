@@ -23,7 +23,7 @@ from smartlib.views import contact, success, index, dash, login, signup
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('index/', index, name='index'),
+    path('', index, name='index'),
     path('login/', login, name='login'),
     path('contact/', contact, name='contact'),
     path('success/', success, name='success'),
