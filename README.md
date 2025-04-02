@@ -5,10 +5,15 @@ The Library Management and Automation System is a web-based application designed
 Built using Django, HTML, CSS, and JavaScript, the system integrates the Google Books API to enhance book searches.
 
 Features:
+
 User Authentication: Secure login and registration system.
+
 Book Borrowing: Users can borrow books with automated due date tracking.
+
 Book Searching: Utilizes the Google Books API for enhanced search functionality.
+
 Book Returning: Tracks book return status.
+
 Admin Dashboard: Manages books, users, and transactions.
 
 Prerequisites:
