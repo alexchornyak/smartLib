@@ -1,12 +1,12 @@
 
 <!DOCTYPE html>
-
+{% load static %}
 <html>
 
 <head>
     <title>Signup</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="stylesheet.css">
+    <link rel="stylesheet" href="{% static 'css/stylesheet.css' %}">
 </head>
 
 <body>
@@ -30,7 +30,7 @@
           </div>
            <!-- Login button -->
           <button type="submit">Sign Up</button>
-          <p class="sign_up">Already have an account? <a href="login.html">Log in</a></p>
+          <p class="sign_up">Already have an account? <a href="/login">Log in</a></p>
         </form>
     </div>
 </body>

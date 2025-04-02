@@ -131,9 +131,9 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587  # Port for sending emails
 EMAIL_USE_TLS = True  # Use TLS security
 EMAIL_HOST_USER = 'msusmartlibrary@gmail.com'
-EMAIL_HOST_PASSWORD = 'gtea adpv nxtk kpxu'  # app password for the above email
+EMAIL_HOST_PASSWORD = 'edwp ncoh tivz cjpo'  # app password for the above email
 DEFAULT_FROM_EMAIL = 'your_email@gmail.com'
-CONTACT_EMAIL = 'msusmartlibrary@gmail.com'
+CONTACT_EMAIL = 'msusmartlibrary@gmail.com' # Password: msusmartlibrary415  <-- to see contact form works
 
 # Path to collect static files
 STATICFILES_DIRS = [ os.path.join(BASE_DIR,'static') ]

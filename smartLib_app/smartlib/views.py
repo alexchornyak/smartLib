@@ -5,8 +5,17 @@ from .forms import ContactForm
 
 # Most backend processing and rendering html/php files
 
-def login_view(request):
-    return render(request, 'profile.html')
+def index(request):
+    return render(request, 'index.html')
+
+def dash(request):
+    return render(request, 'dash.html')
+
+def login(request):
+    return render(request, 'login.html')
+
+def signup(request):
+    return render(request, 'signup.html')
 
 # For contact form
 def contact(request):
@@ -36,5 +45,7 @@ def contact(request):
 def success(request):
     name = request.GET.get('name', 'Guest')  # Default to 'Guest' if no name is passed
     return render(request, 'success.html', {'name': name})
+
+
 
 
