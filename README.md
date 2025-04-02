@@ -11,12 +11,6 @@ Book Searching: Utilizes the Google Books API for enhanced search functionality.
 Book Returning: Tracks book return status.
 Admin Dashboard: Manages books, users, and transactions.
 
-Tech Stack:
-Backend: Django
-Frontend: HTML, CSS, JavaScript
-Database: SQLite (default) or PostgreSQL
-API Integration: Google Books API
-
 Prerequisites:
 - sudo apt-get install python
 - pip install django
