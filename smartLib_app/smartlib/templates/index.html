@@ -11,9 +11,12 @@
 <body>
     <div class = "header">
         <nav>
-            <a href="/login">Login</a>
-            <a href="/signup">Signup</a>
-            <a href="/dash">Dashboard</a>
+            {% if user.is_authenticated %}
+                <a href="/dash">Dashboard</a>
+            {% else %}
+                <a href="/login">Login for access</a>
+            {% endif %}
+        <!-- Remember to make this a hovering button at the buttom right on index -->
             <a href="/contact">Support</a>
         </nav>
     </div>
