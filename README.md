@@ -23,5 +23,7 @@ Prerequisites:
   - Optional but recommended
  
 How to Run:
+- python manage.py makemigrations
+- python manage.py migrate
 - python manage.py runserver
 - All set!
