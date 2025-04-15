@@ -40,7 +40,7 @@ function searchBooks(page = 1) {
                 let bookInfo = book.volumeInfo;
                 let title = bookInfo.title || "No title available";
                 let authors = bookInfo.authors ? bookInfo.authors.join(", ") : "Unknown author";
-                let thumbnail = bookInfo.imageLinks ? bookInfo.imageLinks.thumbnail : "https://via.placeholder.com/150";
+                let thumbnail = bookInfo.imageLinks ? bookInfo.imageLinks.thumbnail : "https://books.google.com/googlebooks/images/no_cover_thumb.gif";
                 let previewLink = bookInfo.previewLink || "#";
 
                 let bookItem = document.createElement("div");
