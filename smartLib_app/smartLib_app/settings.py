@@ -136,6 +136,6 @@ DEFAULT_FROM_EMAIL = 'your_email@gmail.com'
 CONTACT_EMAIL = 'msusmartlibrary@gmail.com' # Password: msusmartlibrary415  <-- to see contact form works
 
 # Path to collect static files
-STATICFILES_DIRS = [ os.path.join(BASE_DIR,'static') ]
+STATICFILES_DIRS = [ os.path.join(BASE_DIR,'smartlib/static') ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'assets')

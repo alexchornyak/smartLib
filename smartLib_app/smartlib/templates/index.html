@@ -21,7 +21,7 @@
         </nav>
     </div>
     
-    <h2>Search</h2>
+    <h1 class="site-title">📚 SmartLib Digital Library</h2>
     <!-- Search Container -->
     <div class="search-container">
         <input id="uquery" type="text" name="uquery" size="45" placeholder="Search for books...">
@@ -43,7 +43,34 @@
     <!-- Pagination Section -->
     <div id="pagination" class="pagination-container"></div> <!-- Pagination Buttons -->
 
+    <div id="contact-toggle" title="Contact support" onclick="toggleContactForm()">🗨️</div>
+
+    <div id="contact-form-popup" class="contact-hidden">
+        <form id="contact-form">
+            {% csrf_token %}
+            <span class="close-btn" onclick="toggleContactForm()"></span>
+            <div class="input_box">
+                <label>Name</label>
+                <input type="text" name="name" value=""placeholder="Enter name" required><br>
+            
+                <label>Email</label>
+                <input type="email" name="email" value="" placeholder="Enter email address" required><br>
+            
+                <label>Subject</label>
+                <input type="text" name="subject" value="" placeholder="Enter subject topic" required><br>
+            
+                <label>Your Message:</label><br>
+                <textarea name="message" rows="10" cols="30" placeholder="Type your message here..." required></textarea><br>
+            
+                <input type="submit" value="Send message">
+                <p id="form-response" style="margin-top: 10px; font-size: 14px;"></p>
+            </div>
+        </form>
+    </div>
+
+    <!-- Loading Script after Page is fully loaded -->
     <script src="{% static 'js/script.js' %}"></script>
+    
 </body>
 
 </html>

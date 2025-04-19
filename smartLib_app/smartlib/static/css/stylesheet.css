@@ -146,33 +146,55 @@ form button:hover {
 }
 
 /* Search & Filter Section */
+.site-title {
+    text-align: center;
+    font-family: 'Merriweather', serif;
+    font-size: 36px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+}
+
 .search-container {
     display: flex;
+    justify-content: center;
     align-items: center;
     gap: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
 }
 
 .search-container input {
-    padding: 15px;
+    padding: 14px 20px;
     width: 350px;
-    font-size: 18px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    transition: border-color 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 .search-container select, .search-container button {
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    padding: 14px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: white;
     cursor: pointer;
+    transition: border-color 0.2s ease;
+    box-shadow: 0 1px 3px rgba(black);
 }
 
 .search-container button {
+    padding: 14px 22px;
     background-color: #c20a0a;
     color: white;
     border: none;
-    transition: 0.3s;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    box-shadow: 0 1px 3px rgba(black);
 }
 
 .search-container button:hover {
@@ -255,4 +277,116 @@ form button:hover {
     font-size: 16px;
     font-weight: 500;
     color: #333;
+}
+
+/* Floating Contact Button (✉) */
+#contact-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: #c20a0a;
+    color: white;
+    font-size: 26px;
+
+    border-radius: 50%;
+    text-align: center;
+    line-height: 50px; /* matches height to center the text */
+    cursor: pointer;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    user-select: none;
+}
+
+#contact-toggle:hover {
+    background-color: #a00a0a;
+    transform: scale(1.1);
+}
+
+/* Contact Form Popup (hidden by default) */
+#contact-form-popup {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 300px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    animation: slideUp 0.3s ease;
+}
+
+/* Hide the form by default */
+.contact-hidden {
+    display: none !important;
+}
+
+/* Smooth entrance animation */
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Form field styling inside the popup */
+#contact-form-popup input,
+#contact-form-popup textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #f8f8fb;
+    resize: vertical;
+}
+
+#contact-form-popup input[type="submit"] {
+    background-color: #c20a0a;
+    color: white;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#contact-form-popup input[type="submit"]:hover {
+    background-color: #a00a0a;
+}
+
+/* Close Button */
+#contact-form-popup .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    width: 32px;            /* Define a square hit area */
+    height: 32px;
+    display: flex;          /* Center the × inside */
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1002;          /* Above form elements */
+    border-radius: 50%;     /* Optional: circular click zone */
+    transition: background-color 0.2s ease;
+}
+
+#contact-form-popup .close-btn::before {
+    display: inline-block;
+    content: "\00d7";
+    font-size: 26px;
+    color: grey;
+}
+
+#contact-form-popup .close-btn:hover::before {
+    color: black;
 }

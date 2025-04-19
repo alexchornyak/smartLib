@@ -3,6 +3,7 @@ const resultsPerPage = 10;
 let totalPages = 1; 
 
 function searchBooks(page = 1) {
+    currentPage = page;
     let query = document.getElementById("uquery").value.trim();
     let filter = document.getElementById("filterDropdown").value;
     let searchResults = document.getElementById("search-results");
@@ -106,6 +107,64 @@ function updatePaginationButtons() {
 // Allow pressing "Enter" to trigger search
 document.getElementById("uquery").addEventListener("keypress", function(event) {
     if (event.key === "Enter") {
+        event.preventDefault();
         searchBooks(1);
     }
 });
+ 
+// Contact Form toggle
+function toggleContactForm() {
+    const form = document.getElementById("contact-form-popup");
+    form.classList.toggle("contact-hidden");
+}
+
+// For contact form
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.querySelector("#contact-form-popup form");
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault(); // Stop default form submission
+
+        const data = {
+            name: form.name.value,
+            email: form.email.value,
+            subject: form.subject.value,
+            message: form.message.value
+        };
+
+        try {
+            const response = await fetch("/contact/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": getCSRFToken()
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            alert(result.message); // Or show in a custom UI box
+            if (result.status === "success") {
+                form.reset();
+                toggleContactForm();
+            }
+        } catch (err) {
+            alert("Something went wrong. Please try again.");
+            console.error(err);
+        }
+    });
+});
+ 
+// Handles CSRF tokens
+function getCSRFToken() {
+    const name = "csrftoken";
+    const cookies = document.cookie.split(";");
+
+    for (let cookie of cookies) {
+        cookie = cookie.trim();
+        if (cookie.startsWith(name + "=")) {
+            return decodeURIComponent(cookie.split("=")[1]);
+        }
+    }
+    return "";
+}
