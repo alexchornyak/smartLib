@@ -5,6 +5,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import ContactForm, SignupForm
 from .models import LibUser
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 import json
 
@@ -13,6 +14,7 @@ def index(request):
     return render(request, 'index.html')
 
 # Dashboard page
+@login_required(login_url="/login/")
 def dash(request):
     return render(request, 'dash.html')
 
