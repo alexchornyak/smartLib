@@ -11,29 +11,31 @@
 <body>
     <div class="header">
         <nav class="nav-container">
-          <div class="nav-left">
-            {% if user.is_authenticated %}
-                <a href="/dash">Dashboard</a>
-            {% endif %}
-            <a href="/contact">Contact</a>
-          </div>
-      
-          <div class="nav-right">
-            {% if user.is_authenticated %}
-              <a href="/logout" class="btn-header-right">Logout</a>
-            {% else %}
-              <a href="/login" class="btn-header-left">Login</a>
-              <a href="/signup" class="btn-header-right">Signup</a>
-            {% endif %}
-          </div>
+            <div class="nav-left">
+                {% if user.is_authenticated %}
+                    <a href="/dash">Dashboard</a>
+                    <span>Welcome, {{ user.username }} ({{ user.role }})</span>
+                {% endif %}
+                <a href="{% url 'contact' %}">Contact</a>
+            </div>
+
+            <div class="nav-right">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}" class="btn-header-right">Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn-header-left">Login</a>
+                    <a href="{% url 'signup' %}" class="btn-header-right">Signup</a>
+                {% endif %}
+            </div>
         </nav>
-      </div>
-    
-    <h1 class="site-title">📚 SmartLib Digital Library</h2>
+    </div>
+
+    <h1 class="site-title">📚 SmartLib Digital Library</h1>
+
     <!-- Search Container -->
     <div class="search-container">
         <input id="uquery" type="text" name="uquery" size="45" placeholder="Search for books...">
-        
+
         <select id="filterDropdown">
             <option value="all">All</option>
             <option value="title">Title</option>
@@ -42,43 +44,42 @@
 
         <!--Needs JavaScript Implementation-->
         <button onclick="searchBooks()">Search</button>
-        
     </div>
 
     <!-- Search Results Section -->
     <div id="search-results"></div> <!-- Results will be shown here -->
-    
+
     <!-- Pagination Section -->
     <div id="pagination" class="pagination-container"></div> <!-- Pagination Buttons -->
 
+    <!-- Contact Icon -->
     <div id="contact-toggle" title="Contact support" onclick="toggleContactForm()">🗨️</div>
 
+    <!-- Contact Form Popup -->
     <div id="contact-form-popup" class="contact-hidden">
         <form id="contact-form">
             {% csrf_token %}
-            <span class="close-btn" onclick="toggleContactForm()"></span>
+            <span class="close-btn" onclick="toggleContactForm()">×</span>
             <div class="input_box">
                 <label>Name</label>
-                <input type="text" name="name" value=""placeholder="Enter name" required><br>
-            
+                <input type="text" name="name" placeholder="Enter name" required><br>
+
                 <label>Email</label>
-                <input type="email" name="email" value="" placeholder="Enter email address" required><br>
-            
+                <input type="email" name="email" placeholder="Enter email address" required><br>
+
                 <label>Subject</label>
-                <input type="text" name="subject" value="" placeholder="Enter subject topic" required><br>
-            
+                <input type="text" name="subject" placeholder="Enter subject topic" required><br>
+
                 <label>Your Message:</label><br>
                 <textarea name="message" rows="10" cols="30" placeholder="Type your message here..." required></textarea><br>
-            
+
                 <input type="submit" value="Send message">
                 <p id="form-response" style="margin-top: 10px; font-size: 14px;"></p>
             </div>
         </form>
     </div>
 
-    <!-- Loading Script after Page is fully loaded -->
     <script src="{% static 'js/script.js' %}"></script>
-    
 </body>
 
 </html>
