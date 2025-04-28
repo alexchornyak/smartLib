@@ -14,39 +14,49 @@
             {% csrf_token %}
             <h3>Sign up</h3>
 
-            {% if form.errors %}
+            <!-- 🔥 Show general non-field errors here -->
+            {% if form.non_field_errors %}
                 <ul class="form-errors">
-                    {% for field in form %}
-                        {% for error in field.errors %}
-                            <li>{{ field.label }}: {{ error }}</li>
-                        {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
                     {% endfor %}
                 </ul>
             {% endif %}
 
+            <!-- Username -->
             <div class="input_box">
                 {{ form.username.label_tag }}
                 {{ form.username }}
+                {% for error in form.username.errors %}
+                    <div class="form-error">{{ error }}</div>
+                {% endfor %}
             </div>
 
+            <!-- Email -->
             <div class="input_box">
                 {{ form.email.label_tag }}
                 {{ form.email }}
+                {% for error in form.email.errors %}
+                    <div class="form-error">{{ error }}</div>
+                {% endfor %}
             </div>
 
+            <!-- Password1 -->
             <div class="input_box">
                 {{ form.password1.label_tag }}
                 {{ form.password1 }}
+                {% for error in form.password1.errors %}
+                    <div class="form-error">{{ error }}</div>
+                {% endfor %}
             </div>
 
+            <!-- Password2 -->
             <div class="input_box">
                 {{ form.password2.label_tag }}
                 {{ form.password2 }}
-            </div>
-
-            <div class="input_box">
-                {{ form.role.label_tag }}
-                {{ form.role }}
+                {% for error in form.password2.errors %}
+                    <div class="form-error">{{ error }}</div>
+                {% endfor %}
             </div>
 
             <button type="submit">Sign Up</button>

@@ -1,74 +1,57 @@
 <!DOCTYPE html>
 {% load static %}
-<html>
+<html lang="en">
 
 <head>
-    <title>Library Dashboard</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{% static 'css/dash.css' %}">
+    <title>Dashboard - SmartLib</title>
     <link rel="stylesheet" href="{% static 'css/stylesheet.css' %}">
 </head>
 
 <body>
-    <div class = "header">
-        <nav>
-            <a href="/">Home</a>
-            <a href="/login">Login</a>
-            <a href="/signup">Signup</a>
-            <a href="/contact">Support</a>
-        </nav>
-    </div>
 
-    <div class="dashboard-container">
-        <!-- Main Content -->
-        <main class="main-content">
-            <header>
-                <h1>User Dashboard</h1>
-            </header>
+<div class="header">
+    <nav class="nav-container">
+        <div class="nav-left">
+            <a href="{% url 'index' %}">Home</a>
+            <a href="{% url 'contact' %}">Contact</a>
+        </div>
 
-            <!-- Books Table for Borrowed Books -->
-            <section class="books-table">
-                <h2>Currently Borrowed Books</h2>
-                <table id="borrowBooksTable">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Book Title</th>
-                            <th>Author</th>
-                            <th>Borrowed Date</th>
-                            <th>Due Date</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Books will be populated here dynamically -->
-                    </tbody>
-                </table>
-            </section>
+        <div class="nav-right">
+            {% if user.is_authenticated %}
+                <span>Welcome, {{ user.username }}</span>
+                <a href="{% url 'logout' %}" class="btn-header-right">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn-header-left">Login</a>
+                <a href="{% url 'signup' %}" class="btn-header-right">Signup</a>
+            {% endif %}
+        </div>
+    </nav>
+</div>
 
-            <!-- Borrow Book Section -->
-            <section class="borrow-request-section">
-                <h2>Borrow a Book</h2>
-                <form id="borrowForm" class="borrow-form">
-                    <input type="text" id="bookTitle" placeholder="Enter book title to borrow">
-                    <button type="button" onclick="borrowBook()">Borrow</button>
+<h1 class="site-title">📚 Checkedout Books</h1>
+
+<div class="search-container">
+    {% for book in books %}
+        <div class="book-item">
+            <h3>{{ book.title }}</h3>
+            <p>Author: {{ book.author }}</p>
+            <p>Genre: {{ book.genre }}</p>
+            <p>Available: {{ book.quantity|add:"-book.borrowed" }}</p>
+
+            {% if book.quantity|add:"-book.borrowed" > 0 %}
+                <form method="post" action="{% url 'borrow_book' book.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Borrow</button>
                 </form>
-            </section>
+            {% else %}
+                <p><em>Not Available</em></p>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>No books found.</p>
+    {% endfor %}
+</div>
 
-            <!-- Return Book Section -->
-            <section class="return-request-section">
-                <h2>Return a Book</h2>
-                <form id="returnForm" class="borrow-form">
-                    <input type="text" id="returnBookTitle" placeholder="Enter book title to return">
-                    <button type="button" onclick="returnBook()">Return</button>
-                </form>
-            </section>
-        </main>
-    </div>
-
-    <!--Needs to be implemented-->
-    <script src="script.js"></script>
 </body>
 
 </html>

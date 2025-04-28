@@ -51,7 +51,8 @@ function searchBooks(page = 1) {
                     <img src="${thumbnail}" alt="${title}">
                     <h3>${title}</h3>
                     <p>${authors}</p>
-                    <a href="${previewLink}" target="_blank">View More</a>
+                    <a href="${previewLink}" target="_blank">View More</a><br><br>
+                    <button onclick="checkoutBook('${escapeJS(title)}', '${escapeJS(authors)}', '${escapeJS(thumbnail)}')">Checkout</button>
                 `;
 
                 searchResults.appendChild(bookItem);
@@ -111,19 +112,19 @@ document.getElementById("uquery").addEventListener("keypress", function(event) {
         searchBooks(1);
     }
 });
- 
+
 // Contact Form toggle
 function toggleContactForm() {
     const form = document.getElementById("contact-form-popup");
     form.classList.toggle("contact-hidden");
 }
 
-// For contact form
+// Contact Form submission (AJAX)
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.querySelector("#contact-form-popup form");
 
     form.addEventListener("submit", async (e) => {
-        e.preventDefault(); // Stop default form submission
+        e.preventDefault();
 
         const data = {
             name: form.name.value,
@@ -143,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             const result = await response.json();
-            alert(result.message); // Or show in a custom UI box
+            alert(result.message);
             if (result.status === "success") {
                 form.reset();
                 toggleContactForm();
@@ -154,8 +155,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
- 
-// Handles CSRF tokens
+
+// Handle CSRF tokens
 function getCSRFToken() {
     const name = "csrftoken";
     const cookies = document.cookie.split(";");
@@ -167,4 +168,35 @@ function getCSRFToken() {
         }
     }
     return "";
+}
+
+// Handle Book Checkout from Homepage
+function checkoutBook(title, authors, thumbnail) {
+    fetch("/checkout/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCSRFToken()
+        },
+        body: JSON.stringify({
+            title: title,
+            author: authors,
+            thumbnail: thumbnail,
+            genre: "Unknown",
+            quantity: 1
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+    })
+    .catch(error => {
+        console.error("Error checking out book:", error);
+        alert("Failed to checkout book.");
+    });
+}
+
+// Escape JavaScript strings safely
+function escapeJS(str) {
+    return str.replace(/'/g, "\\'").replace(/"/g, '\\"');
 }

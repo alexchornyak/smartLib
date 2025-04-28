@@ -3,20 +3,22 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import ContactForm, SignupForm
-from .models import LibUser
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .forms import ContactForm, SignupForm
+from .models import LibUser, Book
 import json
 
 # Homepage
 def index(request):
     return render(request, 'index.html')
 
-# Dashboard page
+# Dashboard page - show books
 @login_required(login_url="/login/")
 def dash(request):
-    return render(request, 'dash.html')
+    books = Book.objects.all()
+    return render(request, 'dash.html', {'books': books})
 
 # Signup view
 def signup_view(request):
@@ -47,7 +49,17 @@ def logout_view(request):
     logout(request)
     return redirect('login')
 
-# Contact view (with AJAX + fallback)
+# Borrow book view (from dashboard)
+@login_required(login_url="/login/")
+def borrow_book(request, book_id):
+    if request.method == 'POST':
+        book = Book.objects.get(id=book_id)
+        if book.quantity - book.borrowed > 0:
+            book.borrowed += 1
+            book.save()
+    return redirect('dash')
+
+# Contact form view
 def contact(request):
     if request.method == 'POST':
         if request.headers.get('Content-Type') == 'application/json':
@@ -65,12 +77,10 @@ def contact(request):
                     [settings.CONTACT_EMAIL],
                     fail_silently=False
                 )
-
                 return JsonResponse({'status': 'success', 'message': 'Message sent successfully'})
             except Exception as e:
                 return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
-        # HTML form fallback
         form = ContactForm(request.POST)
         if form.is_valid():
             name = form.cleaned_data['name']
@@ -90,7 +100,35 @@ def contact(request):
         form = ContactForm()
     return render(request, 'contact.html', {'form': form})
 
-# Success page
+# Success page after contact
 def success(request):
     name = request.GET.get('name', 'Guest')
     return render(request, 'success.html', {'name': name})
+
+# Checkout book from homepage (Google API search)
+@csrf_exempt
+@login_required(login_url="/login/")
+def checkout_book(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        title = data.get('title')
+        author = data.get('author')
+        genre = data.get('genre', 'Unknown')
+        quantity = data.get('quantity', 1)
+
+        book, created = Book.objects.get_or_create(
+            title=title,
+            author=author,
+            defaults={'genre': genre, 'quantity': quantity, 'borrowed': 1}
+        )
+
+        if not created:
+            if book.quantity > book.borrowed:
+                book.borrowed += 1
+                book.save()
+            else:
+                return JsonResponse({'status': 'error', 'message': 'No more copies available.'})
+
+        return JsonResponse({'status': 'success', 'message': 'Book checked out successfully!'})
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request.'}, status=400)

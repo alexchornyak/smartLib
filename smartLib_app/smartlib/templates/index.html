@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
-<html>
+<html lang="en">
 
 <head>
     <title>SmartLib</title>
@@ -9,18 +9,17 @@
 </head>
 
 <body>
+
     <div class="header">
         <nav class="nav-container">
             <div class="nav-left">
-                {% if user.is_authenticated %}
-                    <a href="/dash">Dashboard</a>
-                    <span>Welcome, {{ user.username }} ({{ user.role }})</span>
-                {% endif %}
+                <a href="{% url 'dash' %}">Dashboard</a>
                 <a href="{% url 'contact' %}">Contact</a>
             </div>
-
+        
             <div class="nav-right">
                 {% if user.is_authenticated %}
+                    <span>Welcome, {{ user.username }} </span>
                     <a href="{% url 'logout' %}" class="btn-header-right">Logout</a>
                 {% else %}
                     <a href="{% url 'login' %}" class="btn-header-left">Login</a>
@@ -28,31 +27,27 @@
                 {% endif %}
             </div>
         </nav>
+        
     </div>
 
     <h1 class="site-title">📚 SmartLib Digital Library</h1>
 
-    <!-- Search Container -->
     <div class="search-container">
-        <input id="uquery" type="text" name="uquery" size="45" placeholder="Search for books...">
-
-        <select id="filterDropdown">
-            <option value="all">All</option>
-            <option value="title">Title</option>
-            <option value="author">Author</option>
-        </select>
-
-        <!--Needs JavaScript Implementation-->
-        <button onclick="searchBooks()">Search</button>
+        <form method="GET" action="#">
+            <input id="uquery" type="text" name="uquery" size="45" placeholder="Search for books...">
+            <select id="filterDropdown" name="filter">
+                <option value="all">All</option>
+                <option value="title">Title</option>
+                <option value="author">Author</option>
+            </select>
+            <button type="submit">Search</button>
+        </form>
     </div>
 
-    <!-- Search Results Section -->
-    <div id="search-results"></div> <!-- Results will be shown here -->
+    <div id="search-results"></div>
+    <div id="pagination" class="pagination-container"></div>
 
-    <!-- Pagination Section -->
-    <div id="pagination" class="pagination-container"></div> <!-- Pagination Buttons -->
-
-    <!-- Contact Icon -->
+    <!-- Contact Button -->
     <div id="contact-toggle" title="Contact support" onclick="toggleContactForm()">🗨️</div>
 
     <!-- Contact Form Popup -->
@@ -71,7 +66,7 @@
                 <input type="text" name="subject" placeholder="Enter subject topic" required><br>
 
                 <label>Your Message:</label><br>
-                <textarea name="message" rows="10" cols="30" placeholder="Type your message here..." required></textarea><br>
+                <textarea name="message" rows="5" cols="30" placeholder="Type your message here..." required></textarea><br>
 
                 <input type="submit" value="Send message">
                 <p id="form-response" style="margin-top: 10px; font-size: 14px;"></p>

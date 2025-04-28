@@ -1,6 +1,7 @@
-/* Importing Google Fonts*/
+/* Importing Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
+/* Global Reset */
 * {
     margin: 0;
     padding: 0;
@@ -8,47 +9,63 @@
     font-family: "Montserrat", sans-serif;
 }
 
+/* Body Layout */
 body {
     display: flex;
+    flex-direction: column;
     align-items: center;
     height: 100vh;
-    margin: 0;
-    flex-direction: column;
+    background-color: #fafafa;
 }
 
+/* Header & Navbar */
 .header {
     width: 100%;
-    height: 48.8px;
     background-color: #423d3d;
 }
-  
+
 .nav-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px;
-    height: 48.8px;
+    padding: 0 30px;
+    height: 60px;
 }
 
 .nav-left, .nav-right {
     display: flex;
     align-items: center;
-    gap: 2px;
+    gap: 20px;
 }
 
-.nav-left a {
-    color: #f2f2f2;
+.nav-center {
+    flex: 1;
     text-align: center;
-    padding: 14px 16px;
-    font-size: 17px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-left a, .nav-right a, .nav-center span {
+    color: #f2f2f2;
+    font-size: 16px;
+    font-weight: 600;
     text-decoration: none;
 }
-.nav-left a:hover {
+
+.nav-left a:hover, .nav-right a:hover {
     background-color: #ddd;
     color: black;
-    text-decoration: none;
+    border-radius: 8px;
 }
 
+/* Welcome Text */
+.nav-center span {
+    font-size: 15px;
+    color: #ddd;
+}
+
+/* Buttons inside Navbar */
 .btn-header-left {
     background-color: transparent;
     color: #fff;
@@ -62,7 +79,6 @@ body {
 .btn-header-left:hover {
     background-color: #d3d1d1;
     color: #000;
-    text-decoration: none;
 }
 
 .btn-header-right {
@@ -76,185 +92,70 @@ body {
 }
 
 .btn-header-right:hover {
-    background-color: #df0e0e;
-    text-decoration: none;
+    background-color: #a00a0a;
 }
 
-/* General form styling */
-.form_container {
-    width: 100%;
-    max-width: 435px;
-    background: #fff;
-    border-radius: 6px;
-    padding: 41px 30px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-    display: inline-block;
-}
-
-.form_container h3 {
-    font-size: 20px;
-    text-align: center;
-}
-
-.form_container p {
-    text-align: center;
-    font-weight: 500;
-}
-
-form .input_box label {
-    display: block;
-    font-weight: 500;
-    margin-bottom: 8px;
-}
-
-/* Input field styling */
-form .input_box input,
-form .input_box textarea {
-    width: 100%;
-    border: 1px solid #DADAF2;
-    border-radius: 5px;
-    outline: none;
-    background: #F8F8FB;
-    font-size: 17px;
-    padding: 10px 20px;
-    margin-bottom: 25px;
-    transition: 0.2s ease;
-}
-
-form .input_box input {
-    height: 57px;
-}
-
-form .input_box input:focus,
-form .input_box textarea:focus {
-    border-color: #c20a0a;
-}
-
-form .input_box .password_title {
-    display: flex;
-    justify-content: space-between;
-    text-align: center;
-}
-
-form .input_box {
-    position: relative;
-}
-
-/* Links styling */
-a {
-    text-decoration: none;
-    color: #c20a0a;
-    font-weight: 500;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-/* Button styling */
-form button {
-    width: 100%;
-    height: 56px;
-    border-radius: 5px;
-    border: none;
-    outline: none;
-    background: #c20a0a;
-    color: #fff;
-    font-size: 18px;
-    font-weight: 500;
-    text-transform: uppercase;
-    cursor: pointer;
-    margin-bottom: 28px;
-    transition: 0.3s ease;
-}
-
-form button:hover {
-    background: #a00a0a;
-}
-
-/* Contact form specific styling */
-.contact_form {
-    width: 100%;
-    background: #fff;
-    padding: 41px 30px;
-}
-
-.contact_form textarea {
-    height: 150px;
-    resize: both;
-}
-
-.contact_form h3 {
-    font-size: 20px;
-    text-align: center;
-}
-
-/* Search & Filter Section */
+/* Title */
 .site-title {
     text-align: center;
+    margin: 20px 0;
     font-family: 'Merriweather', serif;
     font-size: 36px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-
 }
 
+/* Search Area */
 .search-container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 30px;
+    margin-top: 20px;
+}
+
+.search-container form {
+    display: flex;
     flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.search-container input,
+.search-container select,
+.search-container button {
+    padding: 14px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
 }
 
 .search-container input {
-    padding: 14px 20px;
-    width: 350px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    transition: border-color 0.2s ease;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
-.search-container select, .search-container button {
-    padding: 14px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: white;
-    cursor: pointer;
-    transition: border-color 0.2s ease;
-    box-shadow: 0 1px 3px rgba(black);
+    width: 300px;
 }
 
 .search-container button {
-    padding: 14px 22px;
     background-color: #c20a0a;
     color: white;
     border: none;
-    border-radius: 8px;
-    font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-    box-shadow: 0 1px 3px rgba(black);
+    width: 200px;
+    transition: background-color 0.2s ease;
 }
 
 .search-container button:hover {
     background-color: #a00a0a;
 }
 
-/* Book Search Results - Responsive Grid */
+/* Search Results Area */
 #search-results {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center; /* Center books */
-    gap: 15px;
+    justify-content: center;
+    gap: 20px;
     width: 80%;
+    margin-top: 30px;
 }
 
-/* Individual Book Item */
+/* Book Cards */
 .book-item {
     width: 200px;
     text-align: center;
@@ -262,6 +163,7 @@ form button:hover {
     border: 1px solid #ddd;
     border-radius: 5px;
     box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+    transition: transform 0.2s ease;
 }
 
 .book-item img {
@@ -284,15 +186,13 @@ form button:hover {
     transform: scale(1.05);
 }
 
-/* Pagination Container */
+/* Pagination */
 .pagination-container {
     display: flex;
     justify-content: center;
-    align-items: center;
     margin-top: 20px;
 }
 
-/* Pagination Buttons */
 .pagination-container button {
     background-color: #c20a0a;
     color: white;
@@ -300,9 +200,9 @@ form button:hover {
     padding: 12px 20px;
     margin: 5px;
     border-radius: 6px;
-    cursor: pointer;
     font-size: 16px;
-    transition: 0.3s;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 .pagination-container button:hover {
@@ -315,15 +215,7 @@ form button:hover {
     opacity: 0.6;
 }
 
-/* Pagination Text */
-.pagination-container span {
-    margin: 0 15px;
-    font-size: 16px;
-    font-weight: 500;
-    color: #333;
-}
-
-/* Floating Contact Button (✉) */
+/* Floating Contact Button */
 #contact-toggle {
     position: fixed;
     bottom: 20px;
@@ -333,15 +225,13 @@ form button:hover {
     background-color: #c20a0a;
     color: white;
     font-size: 26px;
-
     border-radius: 50%;
     text-align: center;
-    line-height: 50px; /* matches height to center the text */
+    line-height: 50px;
     cursor: pointer;
-    z-index: 1000;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    user-select: none;
 }
 
 #contact-toggle:hover {
@@ -349,7 +239,7 @@ form button:hover {
     transform: scale(1.1);
 }
 
-/* Contact Form Popup (hidden by default) */
+/* Contact Form Popup */
 #contact-form-popup {
     position: fixed;
     bottom: 80px;
@@ -358,32 +248,18 @@ form button:hover {
     padding: 20px;
     background-color: white;
     border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    z-index: 1001;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     display: flex;
     flex-direction: column;
     gap: 12px;
     animation: slideUp 0.3s ease;
+    z-index: 1001;
 }
 
-/* Hide the form by default */
 .contact-hidden {
     display: none !important;
 }
 
-/* Smooth entrance animation */
-@keyframes slideUp {
-    from {
-        transform: translateY(20px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-/* Form field styling inside the popup */
 #contact-form-popup input,
 #contact-form-popup textarea {
     width: 100%;
@@ -392,7 +268,6 @@ form button:hover {
     border: 1px solid #ddd;
     border-radius: 5px;
     background: #f8f8fb;
-    resize: vertical;
 }
 
 #contact-form-popup input[type="submit"] {
@@ -413,19 +288,16 @@ form button:hover {
     position: absolute;
     top: 10px;
     right: 14px;
-    width: 32px;            /* Define a square hit area */
+    width: 32px;
     height: 32px;
-    display: flex;          /* Center the × inside */
+    display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    z-index: 1002;          /* Above form elements */
-    border-radius: 50%;     /* Optional: circular click zone */
-    transition: background-color 0.2s ease;
+    border-radius: 50%;
 }
 
 #contact-form-popup .close-btn::before {
-    display: inline-block;
     content: "\00d7";
     font-size: 26px;
     color: grey;
@@ -433,4 +305,16 @@ form button:hover {
 
 #contact-form-popup .close-btn:hover::before {
     color: black;
+}
+
+/* SlideUp Animation */
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }

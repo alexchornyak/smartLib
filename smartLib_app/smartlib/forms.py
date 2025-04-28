@@ -14,4 +14,4 @@ class ContactForm(forms.Form):
 class SignupForm(UserCreationForm):
     class Meta:
         model = LibUser
-        fields = ['username', 'email', 'password1', 'password2', 'role']
+        fields = ['username', 'email', 'password1', 'password2']  # ✅ role removed
