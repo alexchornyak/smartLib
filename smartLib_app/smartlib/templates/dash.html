@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="en">
+<html>
 
 <head>
     <title>Dashboard - SmartLib</title>
@@ -9,46 +9,55 @@
 
 <body>
 
-<div class="header">
-    <nav class="nav-container">
-        <div class="nav-left">
-            <a href="{% url 'index' %}">Home</a>
-            <a href="{% url 'contact' %}">Contact</a>
-        </div>
-
-        <div class="nav-right">
-            {% if user.is_authenticated %}
-                <span>Welcome, {{ user.username }}</span>
-                <a href="{% url 'logout' %}" class="btn-header-right">Logout</a>
-            {% else %}
-                <a href="{% url 'login' %}" class="btn-header-left">Login</a>
-                <a href="{% url 'signup' %}" class="btn-header-right">Signup</a>
-            {% endif %}
-        </div>
-    </nav>
-</div>
-
-<h1 class="site-title">📚 My Borrowed Books</h1>
-
-<div class="search-container">
-    {% if my_borrows %}
-        {% for record in my_borrows %}
-            <div class="book-item">
-                <h3>{{ record.book.title }}</h3>
-                <p>Author: {{ record.book.author }}</p>
-                <p>Genre: {{ record.book.genre }}</p>
-                <p>Borrowed on: {{ record.borrow_date|date:"M d, Y" }}</p>
-
-                <form method="post" action="{% url 'return_book' record.id %}">
-                    {% csrf_token %}
-                    <button type="submit" class="return-button">Return Book</button>
-                </form>
+    <div class="header">
+        <nav class="nav-container">
+            <div class="nav-left">
+                <a href="{% url 'index' %}">Home</a>
+                <a href="{% url 'contact' %}">Contact</a>
             </div>
-        {% endfor %}
-    {% else %}
-        <p>No books currently borrowed.</p>
-    {% endif %}
-</div>
+    
+            <div class="nav-right">
+                {% if user.is_authenticated %}
+                    <span>Welcome, {{ user.username }}</span>
+                    <a href="{% url 'logout' %}" class="btn-header-right">Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn-header-left">Login</a>
+                    <a href="{% url 'signup' %}" class="btn-header-right">Signup</a>
+                {% endif %}
+            </div>
+        </nav>
+    </div>
+    
+    <h1 class="site-title">📚 My Borrowed Books</h1>
+    
+    <div id="search-results" class="search-container">
+        {% if my_borrows %}
+            {% for record in my_borrows %}
+                <div class="book-item">
+                    {% if record.book.thumbnail %}
+                        <img src="{{ record.book.thumbnail }}" alt="{{ record.book.title }}">
+                    {% endif %}
+                    <h3>{{ record.book.title }}</h3>
+                    <p>Author: {{ record.book.author }}</p>
+                    <p>Genre: {{ record.book.genre }}</p>
+                    <p>Borrowed on: {{ record.borrow_date|date:"M d, Y" }}</p>
+    
+                    {% if record.book.preview_link %}
+                        <a href="{% url 'read_book' record.id %}" class="read-now-button">📖 Read Now</a>
+                    {% else %}
+                        <p class="no-preview">No preview available</p>
+                    {% endif %}
+    
+                    <form method="post" action="{% url 'return_book' record.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="return-button" style="margin-top: 10px;">Return Book</button>
+                    </form>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No books currently borrowed.</p>
+        {% endif %}
+    </div>
 
 </body>
 </html>

@@ -35,7 +35,9 @@ function searchBooks(page = 1) {
             return;
         }
 
-        totalPages = data.totalItems ? Math.ceil(data.totalItems / resultsPerPage) : 1;
+        const maxResults = 1000;
+        const totalItems = Math.min(data.totalItems || 0, maxResults);
+        totalPages = Math.ceil(totalItems / resultsPerPage);
 
         const borrowedTitles = await fetch('/borrowed_titles/')
             .then(res => res.json())
@@ -47,6 +49,7 @@ function searchBooks(page = 1) {
             let authors = bookInfo.authors ? bookInfo.authors.join(", ") : "Unknown author";
             let thumbnail = bookInfo.imageLinks ? bookInfo.imageLinks.thumbnail : "https://books.google.com/googlebooks/images/no_cover_thumb.gif";
             let previewLink = bookInfo.previewLink || "#";
+            let bookId = book.id || ""; // Gets Google Book ID
 
             let isAlreadyBorrowed = borrowedTitles.includes(title);
 
@@ -58,7 +61,7 @@ function searchBooks(page = 1) {
                 <h3>${title}</h3>
                 <p>${authors}</p>
                 <a href="${previewLink}" target="_blank">View More</a><br><br>
-                <button onclick="checkoutBook('${escapeJS(title)}', '${escapeJS(authors)}', '${escapeJS(thumbnail)}')" ${isAlreadyBorrowed ? "disabled" : ""}>
+                <button class="checkout-button" onclick="checkoutBook('${escapeJS(title)}', '${escapeJS(authors)}', '${escapeJS(thumbnail)}', '${escapeJS(previewLink)}', '${escapeJS(bookId)}')" ${isAlreadyBorrowed ? "disabled" : ""}>
                     ${isAlreadyBorrowed ? "Already Borrowed" : "Checkout"}
                 </button>
             `;
@@ -83,6 +86,9 @@ function updatePaginationButtons() {
         return;
     } else {
         paginationContainer.style.display = "flex";
+        paginationContainer.style.justifyContent = "center";
+        paginationContainer.style.alignItems = "center";
+        paginationContainer.style.gap = "20px";
     }
 
     const prevButton = document.createElement("button");
@@ -107,10 +113,18 @@ function updatePaginationButtons() {
 
     const pageInfo = document.createElement("span");
     pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+    pageInfo.style.fontWeight = "bold";
+    pageInfo.style.minWidth = "120px"; 
 
-    paginationContainer.appendChild(prevButton);
+    if (currentPage > 1) {
+        paginationContainer.appendChild(prevButton);
+    }
+
     paginationContainer.appendChild(pageInfo);
-    paginationContainer.appendChild(nextButton);
+
+    if (currentPage < totalPages) {
+        paginationContainer.appendChild(nextButton);
+    }
 }
 
 function toggleContactForm() {
@@ -141,16 +155,47 @@ document.addEventListener("DOMContentLoaded", () => {
                     body: JSON.stringify(data)
                 });
 
-                const result = await response.json();
-                alert(result.message);
+                const result = await response.json();   
+                const formResponse = document.getElementById("form-response");
+                formResponse.textContent = result.message;
+                formResponse.style.color = result.status === "success" ? "green" : "red";
+                formResponse.style.opacity = "1";
+
+                setTimeout(() => {
+                    formResponse.style.transition = "opacity 0.8s ease";
+                    formResponse.style.opacity = "0";
+                }, 3000);
+
                 if (result.status === "success") {
                     form.reset();
                     toggleContactForm();
                 }
+
             } catch (err) {
                 alert("Something went wrong. Please try again.");
                 console.error(err);
             }
+        });
+    }
+
+    // Click and Enter for book search triggers
+    const searchInput = document.getElementById("uquery");
+    const searchButton = document.getElementById("search-button");
+
+    // Pressing Enter triggers search
+    if (searchInput) {
+        searchInput.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                searchBooks(1);
+            }
+        });
+    }
+
+    // Clicking the Search button triggers search
+    if (searchButton) {
+        searchButton.addEventListener("click", function() {
+            searchBooks(1);
         });
     }
 });
@@ -168,7 +213,7 @@ function getCSRFToken() {
     return "";
 }
 
-function checkoutBook(title, authors, thumbnail) {
+function checkoutBook(title, authors, thumbnail, previewLink, bookId) {
     fetch("/checkout/", {
         method: "POST",
         headers: {
@@ -180,7 +225,9 @@ function checkoutBook(title, authors, thumbnail) {
             author: authors,
             genre: "Unknown",
             quantity: 1,
-            thumbnail: thumbnail
+            thumbnail: thumbnail,
+            preview_link: previewLink,
+            book_id: bookId
         })
     })
     .then(response => response.json())
@@ -197,11 +244,3 @@ function checkoutBook(title, authors, thumbnail) {
 function escapeJS(str) {
     return str.replace(/'/g, "\\'").replace(/"/g, '\\"');
 }
-
-// Allow Enter key search
-document.getElementById("uquery").addEventListener("keypress", function(event) {
-    if (event.key === "Enter") {
-        event.preventDefault();
-        searchBooks(1);
-    }
-});

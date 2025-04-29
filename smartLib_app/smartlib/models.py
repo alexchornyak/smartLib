@@ -28,9 +28,13 @@ class Book(models.Model):
     genre = models.CharField(max_length=100)
     quantity = models.IntegerField()
     borrowed = models.IntegerField()
+    thumbnail = models.URLField(blank=True, null=True)
+    preview_link = models.URLField(blank=True, null=True)
+    google_book_id = models.CharField(max_length=100, blank=True, null=True)
 
 class BorrowRecord(models.Model):
     user = models.ForeignKey(LibUser, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     borrow_date = models.DateField(auto_now_add=True)
     return_date = models.DateField(null=True, blank=True)  # blank if not returned yet
+    

@@ -93,8 +93,8 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'msusmartlibrary@gmail.com'
-EMAIL_HOST_PASSWORD = 'edwp ncoh tivz cjpo'
-DEFAULT_FROM_EMAIL = 'your_email@gmail.com'
+EMAIL_HOST_PASSWORD = 'vrkn pljl mxjg bnsj'
+DEFAULT_FROM_EMAIL = 'msusmartlibrary@gmail.com'
 CONTACT_EMAIL = 'msusmartlibrary@gmail.com'
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]

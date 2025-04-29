@@ -24,8 +24,8 @@ urlpatterns = [
     path('success/', success, name='success'),
     path('dash/', dash, name='dash'),
     path('borrow/<int:book_id>/', borrow_book, name='borrow_book'),
-    path('borrow/<int:book_id>/', borrow_book, name='borrow_book'),
     path('return/<int:record_id>/', return_book, name='return_book'),
     path('checkout/', checkout_book, name='checkout_book'),
     path('borrowed_titles/', views.borrowed_titles, name='borrowed_titles'),
+    path('read_book/<str:record_id>/', views.read_book, name='read_book'),
 ]

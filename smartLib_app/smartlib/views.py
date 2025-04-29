@@ -55,6 +55,26 @@ def borrowed_titles(request):
     titles = [record.book.title for record in borrowed]
     return JsonResponse({'titles': titles})
 
+# Read book
+@login_required(login_url="/login/")
+def read_book(request, record_id):
+    record = get_object_or_404(BorrowRecord, id=record_id, user=request.user)
+
+    # Extract Google Book ID from preview link
+    book_id = None
+    if record.book.preview_link:
+        import urllib.parse
+        parsed_url = urllib.parse.urlparse(record.book.preview_link)
+        query_params = urllib.parse.parse_qs(parsed_url.query)
+        candidate = query_params.get('id', [None])[0]
+
+        if candidate:
+            book_id = candidate.strip() or None
+
+    return render(request, 'read_book.html', {
+        'record': record,
+        'google_book_id': book_id
+    })
 
 # Logout
 def logout_view(request):
@@ -138,11 +158,22 @@ def checkout_book(request):
         author = data.get('author')
         genre = data.get('genre', 'Unknown')
         quantity = data.get('quantity', 1)
+        thumbnail = data.get('thumbnail', '')
+        preview_link = data.get('preview_link', '')
+        book_id = data.get('book_id', '')
+
 
         book, created = Book.objects.get_or_create(
             title=title,
             author=author,
-            defaults={'genre': genre, 'quantity': quantity, 'borrowed': 1}
+            defaults={
+                'genre': genre,
+                'quantity': 1000,
+                'borrowed': 1,
+                'thumbnail': thumbnail,
+                'preview_link': preview_link,
+                'google_book_id': book_id
+            }
         )
 
         if not created:
@@ -152,7 +183,10 @@ def checkout_book(request):
             else:
                 return JsonResponse({'status': 'error', 'message': 'No more copies available.'})
 
-        BorrowRecord.objects.create(user=request.user, book=book)
+        BorrowRecord.objects.create(
+            user=request.user,
+            book=book
+        )
 
         return JsonResponse({'status': 'success', 'message': 'Book checked out successfully!'})
 
