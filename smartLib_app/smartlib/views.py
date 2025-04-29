@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth import login, logout
@@ -6,21 +6,26 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.utils.timezone import now
 from .forms import ContactForm, SignupForm
-from .models import LibUser, Book
+from .models import LibUser, Book, BorrowRecord
 import json
+
+
 
 # Homepage
 def index(request):
     return render(request, 'index.html')
 
-# Dashboard page - show books
+# Dashboard - Show user's borrowed books and available books
 @login_required(login_url="/login/")
 def dash(request):
-    books = Book.objects.all()
-    return render(request, 'dash.html', {'books': books})
+    my_borrows = BorrowRecord.objects.filter(user=request.user, return_date__isnull=True)
+    return render(request, 'dash.html', {
+        'my_borrows': my_borrows,
+    })
 
-# Signup view
+# Signup
 def signup_view(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
@@ -32,7 +37,7 @@ def signup_view(request):
         form = SignupForm()
     return render(request, 'signup.html', {'form': form})
 
-# Login view
+# Login
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
@@ -44,22 +49,40 @@ def login_view(request):
         form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
 
-# Logout view
+@login_required(login_url="/login/")
+def borrowed_titles(request):
+    borrowed = BorrowRecord.objects.filter(user=request.user, return_date__isnull=True)
+    titles = [record.book.title for record in borrowed]
+    return JsonResponse({'titles': titles})
+
+
+# Logout
 def logout_view(request):
     logout(request)
     return redirect('login')
 
-# Borrow book view (from dashboard)
+# Borrow book
 @login_required(login_url="/login/")
 def borrow_book(request, book_id):
-    if request.method == 'POST':
-        book = Book.objects.get(id=book_id)
-        if book.quantity - book.borrowed > 0:
-            book.borrowed += 1
-            book.save()
+    book = get_object_or_404(Book, pk=book_id)
+    if book.quantity > book.borrowed:
+        book.borrowed += 1
+        book.save()
+        BorrowRecord.objects.create(user=request.user, book=book)
     return redirect('dash')
 
-# Contact form view
+# Return book
+@login_required(login_url="/login/")
+def return_book(request, record_id):
+    record = get_object_or_404(BorrowRecord, pk=record_id)
+    if record.user == request.user and record.return_date is None:
+        record.return_date = now()
+        record.book.borrowed -= 1
+        record.book.save()
+        record.save()
+    return redirect('dash')
+
+# Contact form
 def contact(request):
     if request.method == 'POST':
         if request.headers.get('Content-Type') == 'application/json':
@@ -100,12 +123,12 @@ def contact(request):
         form = ContactForm()
     return render(request, 'contact.html', {'form': form})
 
-# Success page after contact
+# Success page
 def success(request):
     name = request.GET.get('name', 'Guest')
     return render(request, 'success.html', {'name': name})
 
-# Checkout book from homepage (Google API search)
+# Checkout new book from API (homepage)
 @csrf_exempt
 @login_required(login_url="/login/")
 def checkout_book(request):
@@ -128,6 +151,8 @@ def checkout_book(request):
                 book.save()
             else:
                 return JsonResponse({'status': 'error', 'message': 'No more copies available.'})
+
+        BorrowRecord.objects.create(user=request.user, book=book)
 
         return JsonResponse({'status': 'success', 'message': 'Book checked out successfully!'})
 

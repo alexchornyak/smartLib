@@ -1,4 +1,5 @@
 from django.contrib import admin
+from smartlib import views
 from django.urls import path
 from smartlib.views import (
     index,
@@ -9,6 +10,7 @@ from smartlib.views import (
     success,
     dash,
     borrow_book,
+    return_book,
     checkout_book,  # 👈 New view added!
 )
 
@@ -22,5 +24,8 @@ urlpatterns = [
     path('success/', success, name='success'),
     path('dash/', dash, name='dash'),
     path('borrow/<int:book_id>/', borrow_book, name='borrow_book'),
-    path('checkout/', checkout_book, name='checkout_book'),  # 👈 New URL for homepage checkout
+    path('borrow/<int:book_id>/', borrow_book, name='borrow_book'),
+    path('return/<int:record_id>/', return_book, name='return_book'),
+    path('checkout/', checkout_book, name='checkout_book'),
+    path('borrowed_titles/', views.borrowed_titles, name='borrowed_titles'),
 ]

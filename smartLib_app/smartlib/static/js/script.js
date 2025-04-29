@@ -1,6 +1,6 @@
 let currentPage = 1;
-const resultsPerPage = 10; 
-let totalPages = 1; 
+const resultsPerPage = 10;
+let totalPages = 1;
 
 function searchBooks(page = 1) {
     currentPage = page;
@@ -25,45 +25,53 @@ function searchBooks(page = 1) {
     }
 
     fetch(`${apiUrl}&startIndex=${(page - 1) * resultsPerPage}&maxResults=${resultsPerPage}`)
-        .then(response => response.json())
-        .then(data => {
-            searchResults.innerHTML = "";
+    .then(response => response.json())
+    .then(async data => {
+        searchResults.innerHTML = "";
 
-            if (!data.items) {
-                searchResults.innerHTML = "<p>No books found.</p>";
-                paginationContainer.style.display = "none";
-                return;
-            }
+        if (!data.items) {
+            searchResults.innerHTML = "<p>No books found.</p>";
+            paginationContainer.style.display = "none";
+            return;
+        }
 
-            totalPages = data.totalItems ? Math.ceil(data.totalItems / resultsPerPage) : 1;
+        totalPages = data.totalItems ? Math.ceil(data.totalItems / resultsPerPage) : 1;
 
-            data.items.forEach(book => {
-                let bookInfo = book.volumeInfo;
-                let title = bookInfo.title || "No title available";
-                let authors = bookInfo.authors ? bookInfo.authors.join(", ") : "Unknown author";
-                let thumbnail = bookInfo.imageLinks ? bookInfo.imageLinks.thumbnail : "https://books.google.com/googlebooks/images/no_cover_thumb.gif";
-                let previewLink = bookInfo.previewLink || "#";
+        const borrowedTitles = await fetch('/borrowed_titles/')
+            .then(res => res.json())
+            .then(data => data.titles);
 
-                let bookItem = document.createElement("div");
-                bookItem.classList.add("book-item");
+        data.items.forEach(book => {
+            let bookInfo = book.volumeInfo;
+            let title = bookInfo.title || "No title available";
+            let authors = bookInfo.authors ? bookInfo.authors.join(", ") : "Unknown author";
+            let thumbnail = bookInfo.imageLinks ? bookInfo.imageLinks.thumbnail : "https://books.google.com/googlebooks/images/no_cover_thumb.gif";
+            let previewLink = bookInfo.previewLink || "#";
 
-                bookItem.innerHTML = `
-                    <img src="${thumbnail}" alt="${title}">
-                    <h3>${title}</h3>
-                    <p>${authors}</p>
-                    <a href="${previewLink}" target="_blank">View More</a><br><br>
-                    <button onclick="checkoutBook('${escapeJS(title)}', '${escapeJS(authors)}', '${escapeJS(thumbnail)}')">Checkout</button>
-                `;
+            let isAlreadyBorrowed = borrowedTitles.includes(title);
 
-                searchResults.appendChild(bookItem);
-            });
+            let bookItem = document.createElement("div");
+            bookItem.classList.add("book-item");
 
-            updatePaginationButtons();
-        })
-        .catch(error => {
-            console.error("Error fetching data:", error);
-            searchResults.innerHTML = "<p>Something went wrong. Please try again.</p>";
+            bookItem.innerHTML = `
+                <img src="${thumbnail}" alt="${title}">
+                <h3>${title}</h3>
+                <p>${authors}</p>
+                <a href="${previewLink}" target="_blank">View More</a><br><br>
+                <button onclick="checkoutBook('${escapeJS(title)}', '${escapeJS(authors)}', '${escapeJS(thumbnail)}')" ${isAlreadyBorrowed ? "disabled" : ""}>
+                    ${isAlreadyBorrowed ? "Already Borrowed" : "Checkout"}
+                </button>
+            `;
+
+            searchResults.appendChild(bookItem);
         });
+
+        updatePaginationButtons();
+    })
+    .catch(error => {
+        console.error("Error fetching data:", error);
+        searchResults.innerHTML = "<p>Something went wrong. Please try again.</p>";
+    });
 }
 
 function updatePaginationButtons() {
@@ -105,58 +113,48 @@ function updatePaginationButtons() {
     paginationContainer.appendChild(nextButton);
 }
 
-// Allow pressing "Enter" to trigger search
-document.getElementById("uquery").addEventListener("keypress", function(event) {
-    if (event.key === "Enter") {
-        event.preventDefault();
-        searchBooks(1);
-    }
-});
-
-// Contact Form toggle
 function toggleContactForm() {
     const form = document.getElementById("contact-form-popup");
     form.classList.toggle("contact-hidden");
 }
 
-// Contact Form submission (AJAX)
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.querySelector("#contact-form-popup form");
+    if (form) {
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
 
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault();
+            const data = {
+                name: form.name.value,
+                email: form.email.value,
+                subject: form.subject.value,
+                message: form.message.value
+            };
 
-        const data = {
-            name: form.name.value,
-            email: form.email.value,
-            subject: form.subject.value,
-            message: form.message.value
-        };
+            try {
+                const response = await fetch("/contact/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": getCSRFToken()
+                    },
+                    body: JSON.stringify(data)
+                });
 
-        try {
-            const response = await fetch("/contact/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": getCSRFToken()
-                },
-                body: JSON.stringify(data)
-            });
-
-            const result = await response.json();
-            alert(result.message);
-            if (result.status === "success") {
-                form.reset();
-                toggleContactForm();
+                const result = await response.json();
+                alert(result.message);
+                if (result.status === "success") {
+                    form.reset();
+                    toggleContactForm();
+                }
+            } catch (err) {
+                alert("Something went wrong. Please try again.");
+                console.error(err);
             }
-        } catch (err) {
-            alert("Something went wrong. Please try again.");
-            console.error(err);
-        }
-    });
+        });
+    }
 });
 
-// Handle CSRF tokens
 function getCSRFToken() {
     const name = "csrftoken";
     const cookies = document.cookie.split(";");
@@ -170,7 +168,6 @@ function getCSRFToken() {
     return "";
 }
 
-// Handle Book Checkout from Homepage
 function checkoutBook(title, authors, thumbnail) {
     fetch("/checkout/", {
         method: "POST",
@@ -181,14 +178,15 @@ function checkoutBook(title, authors, thumbnail) {
         body: JSON.stringify({
             title: title,
             author: authors,
-            thumbnail: thumbnail,
             genre: "Unknown",
-            quantity: 1
+            quantity: 1,
+            thumbnail: thumbnail
         })
     })
     .then(response => response.json())
     .then(data => {
         alert(data.message);
+        searchBooks(currentPage);  // Refresh after checkout
     })
     .catch(error => {
         console.error("Error checking out book:", error);
@@ -196,7 +194,14 @@ function checkoutBook(title, authors, thumbnail) {
     });
 }
 
-// Escape JavaScript strings safely
 function escapeJS(str) {
     return str.replace(/'/g, "\\'").replace(/"/g, '\\"');
 }
+
+// Allow Enter key search
+document.getElementById("uquery").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        searchBooks(1);
+    }
+});

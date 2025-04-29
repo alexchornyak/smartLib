@@ -1,49 +1,70 @@
 <!DOCTYPE html>
 {% load static %}
-<html>
-
+<html lang="en">
 <head>
-    <title>Support</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <title>Contact Us</title>
     <link rel="stylesheet" href="{% static 'css/stylesheet.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
 
-    <hr>
-
-    <div class="contact_form">
-        <h3>Contact Us</h3>
-        <form method="POST">
-            {% csrf_token %}
-
-            {% if form.errors %}
-                <ul class="form-errors">
-                    {% for field in form %}
-                        {% for error in field.errors %}
-                            <li>{{ field.label }}: {{ error }}</li>
-                        {% endfor %}
-                    {% endfor %}
-                </ul>
+<div class="header">
+    <nav class="nav-container">
+        <div class="nav-left">
+            <a href="{% url 'index' %}">Home</a>
+            <a href="{% url 'contact' %}">Contact</a>
+        </div>
+        <div class="nav-right">
+            {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}" class="btn-header-right">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn-header-left">Login</a>
+                <a href="{% url 'signup' %}" class="btn-header-right">Signup</a>
             {% endif %}
+        </div>
+    </nav>
+</div>
 
-            <div class="input_box">
-                {{ form.name.label_tag }}
-                {{ form.name }}
+<div class="form_container">
+    <form method="post">
+        {% csrf_token %}
+        <h3>Contact Us</h3>
 
-                {{ form.email.label_tag }}
-                {{ form.email }}
+        {% if form.errors %}
+            <ul class="form-errors">
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ field.label }}: {{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        {% endif %}
 
-                {{ form.subject.label_tag }}
-                {{ form.subject }}
+        <div class="input_box">
+            {{ form.name.label_tag }}
+            {{ form.name }}
+        </div>
 
-                {{ form.message.label_tag }}
-                {{ form.message }}
+        <div class="input_box">
+            {{ form.email.label_tag }}
+            {{ form.email }}
+        </div>
 
-                <input type="submit" value="Send message">
-            </div>
-        </form>
-    </div>
+        <div class="input_box">
+            {{ form.subject.label_tag }}
+            {{ form.subject }}
+        </div>
+
+        <div class="input_box">
+            {{ form.message.label_tag }}
+            {{ form.message }}
+        </div>
+
+        <button type="submit">Send Message</button>
+    </form>
+</div>
+
 </body>
-
 </html>

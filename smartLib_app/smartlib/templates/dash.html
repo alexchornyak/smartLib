@@ -28,30 +28,27 @@
     </nav>
 </div>
 
-<h1 class="site-title">📚 Checkedout Books</h1>
+<h1 class="site-title">📚 My Borrowed Books</h1>
 
 <div class="search-container">
-    {% for book in books %}
-        <div class="book-item">
-            <h3>{{ book.title }}</h3>
-            <p>Author: {{ book.author }}</p>
-            <p>Genre: {{ book.genre }}</p>
-            <p>Available: {{ book.quantity|add:"-book.borrowed" }}</p>
+    {% if my_borrows %}
+        {% for record in my_borrows %}
+            <div class="book-item">
+                <h3>{{ record.book.title }}</h3>
+                <p>Author: {{ record.book.author }}</p>
+                <p>Genre: {{ record.book.genre }}</p>
+                <p>Borrowed on: {{ record.borrow_date|date:"M d, Y" }}</p>
 
-            {% if book.quantity|add:"-book.borrowed" > 0 %}
-                <form method="post" action="{% url 'borrow_book' book.id %}">
+                <form method="post" action="{% url 'return_book' record.id %}">
                     {% csrf_token %}
-                    <button type="submit">Borrow</button>
+                    <button type="submit" class="return-button">Return Book</button>
                 </form>
-            {% else %}
-                <p><em>Not Available</em></p>
-            {% endif %}
-        </div>
-    {% empty %}
-        <p>No books found.</p>
-    {% endfor %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No books currently borrowed.</p>
+    {% endif %}
 </div>
 
 </body>
-
 </html>

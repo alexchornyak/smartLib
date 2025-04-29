@@ -1,7 +1,6 @@
 /* Importing Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
-/* Global Reset */
 * {
     margin: 0;
     padding: 0;
@@ -9,16 +8,12 @@
     font-family: "Montserrat", sans-serif;
 }
 
-/* Body Layout */
 body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100vh;
     background-color: #fafafa;
+    font-family: "Montserrat", sans-serif;
 }
 
-/* Header & Navbar */
+/* Header */
 .header {
     width: 100%;
     background-color: #423d3d;
@@ -30,6 +25,23 @@ body {
     align-items: center;
     padding: 0 30px;
     height: 60px;
+}
+.return-button {
+    margin-top: 15px;
+    width: 100%;
+    padding: 12px;
+    background-color: #c20a0a;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.return-button:hover {
+    background-color: #a00a0a;
 }
 
 .nav-left, .nav-right {
@@ -59,7 +71,7 @@ body {
     border-radius: 8px;
 }
 
-/* Welcome Text */
+/* Welcome text */
 .nav-center span {
     font-size: 15px;
     color: #ddd;
@@ -95,7 +107,83 @@ body {
     background-color: #a00a0a;
 }
 
-/* Title */
+/* Form Container */
+.form_container {
+    width: 100%;
+    max-width: 435px;
+    background: #fff;
+    border-radius: 6px;
+    padding: 41px 30px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    margin: 40px auto;
+}
+
+form .input_box label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+form .input_box input,
+form .input_box textarea {
+    width: 100%;
+    border: 1px solid #DADAF2;
+    border-radius: 5px;
+    outline: none;
+    background: #F8F8FB;
+    font-size: 17px;
+    padding: 10px 20px;
+    margin-bottom: 25px;
+    transition: 0.2s ease;
+}
+
+form .input_box input {
+    height: 57px;
+}
+
+form .input_box input:focus,
+form .input_box textarea:focus {
+    border-color: #c20a0a;
+}
+
+form .input_box .password_title {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+
+form button {
+    width: 100%;
+    height: 56px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    background: #c20a0a;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-bottom: 28px;
+    transition: 0.3s ease;
+}
+
+form button:hover {
+    background: #a00a0a;
+}
+
+/* Links */
+a {
+    text-decoration: none;
+    color: #c20a0a;
+    font-weight: 500;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Search Title */
 .site-title {
     text-align: center;
     margin: 20px 0;
@@ -106,16 +194,11 @@ body {
 /* Search Area */
 .search-container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-}
-
-.search-container form {
-    display: flex;
     flex-wrap: wrap;
-    gap: 10px;
     justify-content: center;
+    align-items: flex-start;
+    margin-top: 40px;
+    gap: 20px;
 }
 
 .search-container input,
@@ -145,7 +228,7 @@ body {
     background-color: #a00a0a;
 }
 
-/* Search Results Area */
+/* Book Search Results */
 #search-results {
     display: flex;
     flex-wrap: wrap;
@@ -155,15 +238,15 @@ body {
     margin-top: 30px;
 }
 
-/* Book Cards */
+/* Individual Book Card */
 .book-item {
-    width: 200px;
+    width: 250px;
     text-align: center;
-    padding: 10px;
+    padding: 20px;
     border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
-    transition: transform 0.2s ease;
+    border-radius: 8px;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.15);
+    background-color: #fff;
 }
 
 .book-item img {
@@ -307,7 +390,7 @@ body {
     color: black;
 }
 
-/* SlideUp Animation */
+/* Smooth Slide Animation */
 @keyframes slideUp {
     from {
         transform: translateY(20px);
